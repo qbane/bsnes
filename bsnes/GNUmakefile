@@ -1,7 +1,7 @@
-target := bsnes
+target := bsnes-wasm
 binary := application
 build := performance
-openmp := true
+openmp := false
 local := true
 flags += -I. -I..
 
@@ -15,6 +15,15 @@ endif
 # binaries built with this flag are faster, but are not portable to multiple machines.
 ifeq ($(local),true)
   flags += -march=native
+endif
+
+ifeq ($(target),bsnes-wasm)
+  ifeq ($(platform),)
+    platform := wasm
+  endif
+  ifneq ($(platform),wasm)
+    $(error When target is bsnes-wasm, platform must be set to wasm.)
+  endif
 endif
 
 nall.path := ../nall
@@ -42,6 +51,11 @@ else ifneq ($(filter $(platform),linux bsd),)
     flags += -fPIC
     options += -shared
   endif
+else ifeq ($(platform),wasm)
+  flags += -g1
+  flags += -msimd128
+  flags += -fdiagnostics-color
+  flags += -Wno-unqualified-std-cast-call
 endif
 
 objects := libco emulator filter lzma

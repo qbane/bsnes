@@ -73,6 +73,8 @@ ifeq ($(compiler),)
     compiler := g++
   else ifeq ($(platform),bsd)
     compiler := g++8
+  else ifeq ($(platform),wasm)
+    compiler := emcc
   else
     compiler := g++
   endif
