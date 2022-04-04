@@ -7,7 +7,7 @@
 #endif
 
 #if defined(__EMSCRIPTEN__)
-  #include "emscripten_fiber.c"
+  #include "emscripten_pthread.c"
 #elif defined(__clang__) || defined(__GNUC__)
   #if defined(__i386__)
     #include "x86.c"
